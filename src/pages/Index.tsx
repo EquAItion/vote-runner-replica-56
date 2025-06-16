@@ -3,13 +3,14 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Vote, Users, BarChart3, Settings, Clock, CheckCircle, Shield, UserCheck, List } from "lucide-react";
+import { Plus, Vote, Users, BarChart3, Settings, Clock, CheckCircle, Shield, UserCheck, List, User } from "lucide-react";
 import { ElectionCreator } from "@/components/ElectionCreator";
 import { VotingInterface } from "@/components/VotingInterface";
 import { ResultsDashboard } from "@/components/ResultsDashboard";
 import { VoterCodeGenerator } from "@/components/VoterCodeGenerator";
 import { VoterVerification } from "@/components/VoterVerification";
 import { VoterList } from "@/components/VoterList";
+import { useNavigate } from "react-router-dom";
 
 interface Election {
   id: string;
@@ -59,6 +60,8 @@ const Index = () => {
       ]
     }
   ]);
+
+  const navigate = useNavigate();
 
   const addElection = (election: Omit<Election, 'id' | 'totalVotes' | 'candidates'>) => {
     const newElection: Election = {
@@ -187,6 +190,54 @@ const Index = () => {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Quick Access Panels */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <Card className="hover:shadow-lg transition-shadow duration-200 cursor-pointer" onClick={() => navigate('/voter-panel')}>
+            <CardHeader className="text-center">
+              <User className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+              <CardTitle className="text-xl">Voter Panel</CardTitle>
+              <CardDescription>
+                Register to vote with document verification and cast your ballot
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="text-center">
+              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                Access Voter Portal
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow duration-200 cursor-pointer" onClick={() => navigate('/commissioner-panel')}>
+            <CardHeader className="text-center">
+              <Settings className="w-12 h-12 text-purple-600 mx-auto mb-4" />
+              <CardTitle className="text-xl">Election Commissioner</CardTitle>
+              <CardDescription>
+                Create and manage elections, monitor voting progress
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="text-center">
+              <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
+                Access Admin Panel
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow duration-200 cursor-pointer" onClick={() => navigate('/results-panel')}>
+            <CardHeader className="text-center">
+              <BarChart3 className="w-12 h-12 text-green-600 mx-auto mb-4" />
+              <CardTitle className="text-xl">Vote Results</CardTitle>
+              <CardDescription>
+                View live results and final election outcomes
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="text-center">
+              <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
+                View Results
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card>
