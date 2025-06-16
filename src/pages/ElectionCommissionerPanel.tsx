@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,7 +20,12 @@ interface Election {
   startDate: string;
   endDate: string;
   totalVotes: number;
-  candidates: string[];
+  candidates: Array<{
+    id: string;
+    name: string;
+    party: string;
+    votes: number;
+  }>;
 }
 
 export const ElectionCommissionerPanel = () => {
@@ -33,7 +39,11 @@ export const ElectionCommissionerPanel = () => {
       startDate: '2024-06-15',
       endDate: '2024-06-20',
       totalVotes: 1247,
-      candidates: ['Sarah Johnson', 'Mike Chen', 'Emma Davis']
+      candidates: [
+        { id: '1', name: 'Sarah Johnson', party: 'Progressive Party', votes: 543 },
+        { id: '2', name: 'Mike Chen', party: 'Unity Coalition', votes: 421 },
+        { id: '3', name: 'Emma Davis', party: 'Student First', votes: 283 }
+      ]
     },
     {
       id: '2',
@@ -43,7 +53,10 @@ export const ElectionCommissionerPanel = () => {
       startDate: '2024-05-01',
       endDate: '2024-05-15',
       totalVotes: 856,
-      candidates: ['Robert Smith', 'Lisa Wong']
+      candidates: [
+        { id: '4', name: 'Robert Smith', party: 'Independent', votes: 445 },
+        { id: '5', name: 'Lisa Wong', party: 'Reform Group', votes: 411 }
+      ]
     }
   ]);
 
@@ -104,6 +117,14 @@ export const ElectionCommissionerPanel = () => {
       return;
     }
 
+    // Convert candidate names to full candidate objects
+    const candidateObjects = filteredCandidates.map((name, index) => ({
+      id: (Date.now() + index).toString(),
+      name: name,
+      party: 'Independent', // Default party
+      votes: 0
+    }));
+
     const election: Election = {
       id: Date.now().toString(),
       title: newElection.title,
@@ -112,7 +133,7 @@ export const ElectionCommissionerPanel = () => {
       startDate: newElection.startDate,
       endDate: newElection.endDate,
       totalVotes: 0,
-      candidates: filteredCandidates
+      candidates: candidateObjects
     };
 
     setElections([...elections, election]);
