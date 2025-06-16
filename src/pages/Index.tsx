@@ -1,12 +1,12 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Vote, Users, BarChart3, Settings, Clock, CheckCircle } from "lucide-react";
+import { Plus, Vote, Users, BarChart3, Settings, Clock, CheckCircle, Shield } from "lucide-react";
 import { ElectionCreator } from "@/components/ElectionCreator";
 import { VotingInterface } from "@/components/VotingInterface";
 import { ResultsDashboard } from "@/components/ResultsDashboard";
+import { VoterCodeGenerator } from "@/components/VoterCodeGenerator";
 
 interface Election {
   id: string;
@@ -25,7 +25,7 @@ interface Election {
 }
 
 const Index = () => {
-  const [currentView, setCurrentView] = useState<'dashboard' | 'create' | 'vote' | 'results'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'create' | 'vote' | 'results' | 'codes'>('dashboard');
   const [selectedElection, setSelectedElection] = useState<Election | null>(null);
   const [elections, setElections] = useState<Election[]>([
     {
@@ -110,6 +110,15 @@ const Index = () => {
     );
   }
 
+  if (currentView === 'codes') {
+    return (
+      <VoterCodeGenerator 
+        elections={elections} 
+        onBack={() => setCurrentView('dashboard')}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       {/* Header */}
@@ -121,6 +130,14 @@ const Index = () => {
               <h1 className="text-2xl font-bold text-gray-900">ElectionRunner</h1>
             </div>
             <div className="flex items-center space-x-4">
+              <Button
+                onClick={() => setCurrentView('codes')}
+                variant="outline"
+                className="border-blue-600 text-blue-600 hover:bg-blue-50"
+              >
+                <Shield className="w-4 h-4 mr-2" />
+                Generate Voter Codes
+              </Button>
               <Button
                 onClick={() => setCurrentView('create')}
                 className="bg-blue-600 hover:bg-blue-700 text-white"
