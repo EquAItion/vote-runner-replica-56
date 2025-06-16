@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Plus, Vote, Users, BarChart3, Settings, ArrowLeft, CheckCircle, Clock, Edit } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { VoterList } from "@/components/VoterList";
 
 interface Election {
   id: string;
@@ -23,7 +23,7 @@ interface Election {
 }
 
 export const ElectionCommissionerPanel = () => {
-  const [currentView, setCurrentView] = useState<'dashboard' | 'create' | 'manage'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'create' | 'manage' | 'voters'>('dashboard');
   const [elections, setElections] = useState<Election[]>([
     {
       id: '1',
@@ -157,6 +157,11 @@ export const ElectionCommissionerPanel = () => {
     }
   };
 
+  // Show voter list view
+  if (currentView === 'voters') {
+    return <VoterList elections={elections} onBack={() => setCurrentView('dashboard')} />;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50">
       {/* Header */}
@@ -174,6 +179,14 @@ export const ElectionCommissionerPanel = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              <Button
+                onClick={() => setCurrentView('voters')}
+                variant="outline"
+                className="border-blue-200 text-blue-700 hover:bg-blue-50"
+              >
+                <Users className="w-4 h-4 mr-2" />
+                Voter List
+              </Button>
               <Button
                 onClick={() => setCurrentView('create')}
                 className="bg-purple-600 hover:bg-purple-700 text-white"
