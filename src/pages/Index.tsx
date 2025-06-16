@@ -1,13 +1,15 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Vote, Users, BarChart3, Settings, Clock, CheckCircle, Shield, UserCheck } from "lucide-react";
+import { Plus, Vote, Users, BarChart3, Settings, Clock, CheckCircle, Shield, UserCheck, List } from "lucide-react";
 import { ElectionCreator } from "@/components/ElectionCreator";
 import { VotingInterface } from "@/components/VotingInterface";
 import { ResultsDashboard } from "@/components/ResultsDashboard";
 import { VoterCodeGenerator } from "@/components/VoterCodeGenerator";
 import { VoterVerification } from "@/components/VoterVerification";
+import { VoterList } from "@/components/VoterList";
 
 interface Election {
   id: string;
@@ -26,7 +28,7 @@ interface Election {
 }
 
 const Index = () => {
-  const [currentView, setCurrentView] = useState<'dashboard' | 'create' | 'vote' | 'results' | 'codes' | 'verification'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'create' | 'vote' | 'results' | 'codes' | 'verification' | 'voterlist'>('dashboard');
   const [selectedElection, setSelectedElection] = useState<Election | null>(null);
   const [elections, setElections] = useState<Election[]>([
     {
@@ -128,6 +130,15 @@ const Index = () => {
     );
   }
 
+  if (currentView === 'voterlist') {
+    return (
+      <VoterList 
+        elections={elections} 
+        onBack={() => setCurrentView('dashboard')}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       {/* Header */}
@@ -139,6 +150,14 @@ const Index = () => {
               <h1 className="text-2xl font-bold text-gray-900">ElectionRunner</h1>
             </div>
             <div className="flex items-center space-x-4">
+              <Button
+                onClick={() => setCurrentView('voterlist')}
+                variant="outline"
+                className="border-purple-600 text-purple-600 hover:bg-purple-50"
+              >
+                <List className="w-4 h-4 mr-2" />
+                Voter List
+              </Button>
               <Button
                 onClick={() => setCurrentView('verification')}
                 variant="outline"
