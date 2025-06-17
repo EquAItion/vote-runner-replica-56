@@ -90,6 +90,14 @@ const Index = () => {
     }
   };
 
+  // Mock voter info for admin panel testing
+  const mockVoterInfo = {
+    firstName: 'Admin',
+    lastName: 'User',
+    email: 'admin@example.com',
+    voterId: 'ADMIN001'
+  };
+
   if (currentView === 'create') {
     return <ElectionCreator onBack={() => setCurrentView('dashboard')} onSave={addElection} />;
   }
@@ -97,11 +105,12 @@ const Index = () => {
   if (currentView === 'vote' && selectedElection) {
     return (
       <VotingInterface 
-        election={selectedElection} 
+        elections={[selectedElection]} 
         onBack={() => setCurrentView('dashboard')}
         onVoteSubmitted={() => {
           setCurrentView('dashboard');
         }}
+        voterInfo={mockVoterInfo}
       />
     );
   }
